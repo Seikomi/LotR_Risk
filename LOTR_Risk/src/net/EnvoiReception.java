@@ -1,30 +1,24 @@
 package net;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import objects.Joueur;
 import utils.InterfaceLOTR;
 
-public class ThreadEnvoiReception extends Thread implements InterfaceLOTR {
+public class EnvoiReception extends Thread implements InterfaceLOTR{
 
+	private ArrayList<Joueur> listJoueur; //Permet de stocker la liste recu ou voulante etre envoyée
+	private int traitement; //Sert à définir le traitement voulu (via constantes InterfaceLOTR)
 	private Reception in;
 	private Emission out;
-	private ArrayList<Joueur> listJoueur;
-	private int traitement; //Sert à définir le traitement voulu (via constantes InterfaceLOTR)
 	
-	public ThreadEnvoiReception(Socket soc) throws IOException {
+	public EnvoiReception(Reception in, Emission out, ArrayList<Joueur> listJoueurs, int traitement) {
 		super();
-		this.out = new Emission(soc.getOutputStream());
-		this.in = new Reception(soc.getInputStream());
-	}
-	
-	public ThreadEnvoiReception(Emission out, Reception in, ArrayList<Joueur> listJoueurs) throws IOException {
-		super();
-		this.out = out;
-		this.in = in;
 		this.listJoueur = listJoueurs;
+		this.traitement = traitement;
+		this.in = in;
+		this.out = out;
 	}
 	
 	@Override
@@ -47,16 +41,6 @@ public class ThreadEnvoiReception extends Thread implements InterfaceLOTR {
 	}
 	
 	/**
-	 * Exécute le traitement attendue par la constante de jeu passé en paramètre.
-	 * @param traitement
-	 * 		constante définie par l'interface <b>InterfaceLOTR</b>
-	 */
-	public void definirTraitementEtExecuter(int traitement) {
-		this.traitement = traitement;
-		this.start();
-	}
-	
-	/**
 	 * Reçoit la liste des joueurs envoyée par l'application distante.
 	 * @throws ClassNotFoundException
 	 * @throws IOException
@@ -69,15 +53,17 @@ public class ThreadEnvoiReception extends Thread implements InterfaceLOTR {
 			System.out.println("Erreur de saisie, j'attend un ENTIER");
 			nbJoueurs = in.getInt();
 		}
-		ArrayList<Joueur> toReturn = new ArrayList<Joueur>(nbJoueurs);
+		if (this.listJoueur == null)
+			this.listJoueur = new ArrayList<Joueur>(nbJoueurs);
+		
 		for (int i = 0; i < nbJoueurs; i ++) {
 			Joueur joueurRecu = in.getJoueur();
-			if (!toReturn.contains(joueurRecu)) {
-				toReturn.add(joueurRecu);
+			if (!listJoueur.contains(joueurRecu)) {
+				listJoueur.add(joueurRecu);
 				System.out.println("Joueur ajouté : " + joueurRecu.getNom());
 			}
 		}
-		return toReturn;
+		return this.listJoueur;
 	}
 	
 	private boolean sendInfosJoueurs() 
@@ -96,33 +82,7 @@ public class ThreadEnvoiReception extends Thread implements InterfaceLOTR {
 		return true;
 	}
 	
-	/**
-	 * Surcharge de la méthode pour pouvoir réexécuter la méthode run() du Thread.
-	 */
-	public ThreadEnvoiReception clone() 
-	{
-		try {
-			return new ThreadEnvoiReception(this.out, this.in, this.listJoueur);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public Integer get_Constante_Jeu() throws ClassNotFoundException, IOException {
-		return (in.getInt());
-	}
-	
-	public void close() throws IOException {
-		out.close();
-		in.close();
-	}
-	
 	public ArrayList<Joueur> getListJoueur() {
 		return listJoueur;
-	}
-	
-	public void setListJoueur(ArrayList<Joueur> listJoueur) {
-		this.listJoueur = listJoueur;
 	}
 }
