@@ -64,8 +64,6 @@ public class InfoJoueur extends Box {
 						false					// Configure chart to generate URLs?
 						);
 		
-		
-		
 		this.chartPanel = new ChartPanel(chart);
 		
 		this.chartPanel.setVisible(true);
