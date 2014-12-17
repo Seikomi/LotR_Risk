@@ -1,11 +1,10 @@
 package swingGUI;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class Logger extends JPanel {
+
+	private static final long serialVersionUID = -7330137183493756141L;
 	private String buffer;
 	
 

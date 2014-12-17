@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Map extends JPanel {
+	private static final long serialVersionUID = -2788719104842527854L;
 	private final ImageIcon mapImage;
 	
 	public Map(ImageIcon mapImage) {

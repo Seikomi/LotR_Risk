@@ -1,27 +1,23 @@
 package swingGUI;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import objects.Joueur;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
-import objects.Joueur;
-import objects.Territoire;
 import utils.LOTR_Data;
 
 public class InfoJoueur extends Box {
+	private static final long serialVersionUID = 6412467141232271552L;
 	private ArrayList<Joueur> joueurData;
 	private LOTR_Data data;
 	private ChartPanel chartPanel;
@@ -40,7 +36,8 @@ public class InfoJoueur extends Box {
 		this.joueurData = joueurData;
 		this.data = new LOTR_Data();
 		
-		for (Joueur joueur : joueurData) {
+		DefaultPieDataset pieDataset = new DefaultPieDataset();		
+		for (Joueur joueur : this.joueurData) {
 			JLabel nomJoueurJLabel = new JLabel(joueur.getNom());
 			nomJoueurJLabel.setForeground(Color.decode(joueur.getCouleurRGB()));
 			this.add(nomJoueurJLabel);
@@ -53,28 +50,19 @@ public class InfoJoueur extends Box {
 			nombreUnitesParTourJLabel.setForeground(Color.decode(joueur.getCouleurRGB()));
 			this.add(nombreUnitesParTourJLabel);
 			
-			//this.add(new InfoTerritoire(joueur.getListTerritoire()));
+			int territoryPercentage = joueur.getNb_Territoire() / this.data.NOMBRE_TERRITOIRES;
+			
+			pieDataset.setValue(joueur.getNom(), new Integer(75));
 		}
 		
-		DefaultPieDataset pieDataset = new DefaultPieDataset();
-		pieDataset.setValue("A", new Integer(75));
-		pieDataset.setValue("B", new Integer(10));
-		pieDataset.setValue("C", new Integer(10));
-		pieDataset.setValue("D", new Integer(5));
+		pieDataset.setValue("Neutre", new Integer(75));
 		JFreeChart chart = ChartFactory.createPieChart
-				("CSC408 Mark Distribution",    // Title
+						("",    				// Title
 						pieDataset, 			// Dataset
-						true,					// Show legend
-						true,					// Use tooltips
+						false,					// Show legend
+						false,					// Use tooltips
 						false					// Configure chart to generate URLs?
 						);
-		
-		
-		try {
-			ChartUtilities.saveChartAsJPEG(new File("C:\\chart.jpg"), chart, 500, 300);
-		} catch (Exception e) {
-			System.out.println("Problem occurred creating chart.");
-		}
 		
 		
 		

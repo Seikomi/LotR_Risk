@@ -1,19 +1,17 @@
 package swingGUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import objects.Joueur;
 
 public class MainWindow extends JFrame {
+	private static final long serialVersionUID = 2563377374330561999L;
 	private ArrayList<Joueur> listeJoueur;
 	
 	public MainWindow(ArrayList<Joueur> listeJoueur) {
@@ -24,10 +22,8 @@ public class MainWindow extends JFrame {
 		this.setTitle("LotR_Risk");                           
 		this.setLayout(new BorderLayout());                                                                        
 		                                                      
-		//Box listJoueur = Box.createVerticalBox();           
 		
-		
-		InfoJoueur infoJoueurBox = new InfoJoueur(listeJoueur);
+		InfoJoueur infoJoueurBox = new InfoJoueur(this.listeJoueur);
 		
 		
 		Box log = Box.createHorizontalBox();
@@ -46,8 +42,6 @@ public class MainWindow extends JFrame {
 		this.add(log, BorderLayout.SOUTH);
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		setVisible(true);
 	}
 
 	@Override

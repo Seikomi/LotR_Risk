@@ -1,6 +1,5 @@
 package swingGUI;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import objects.Joueur;
@@ -8,7 +7,6 @@ import objects.Territoire;
 import objects.TypeTerritoire;
 import utils.InterfaceLOTR;
 import utils.LOTR_Data;
-import utils.LOTR_Game;
 
 public class Main implements InterfaceLOTR {
 
@@ -18,8 +16,7 @@ public class Main implements InterfaceLOTR {
 		ArrayList<Joueur> j = init_joueurs();
 		MainWindow serveurGui = new MainWindow(j);
 		
-		//j.add(new Joueur("test", "#00EECD"));
-		//serveurGui.repaint();
+		serveurGui.setVisible(true);
 		
 	}
 	

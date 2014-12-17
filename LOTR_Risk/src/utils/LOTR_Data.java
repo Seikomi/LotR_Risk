@@ -17,6 +17,8 @@ public class LOTR_Data {
 	
 	private ArrayList<Region> mapRegion;
 	
+	public final static int NOMBRE_TERRITOIRES = 42;
+	
 	public LOTR_Data() {
 		this.mapRegion = new ArrayList<Region>(6);
 		mapRegion.add(this.init_list_Territoire_Rohan()); 
